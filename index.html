@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CheckSmart — AML Screening</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ══════════════════════════════════════════════════════════════
+       CHECKSMART — ENHANCED DESIGN SYSTEM
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── Reset ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Tokens ────────────────────────────────────────────────── */
+    :root {
+      --navy:       #05122a;
+      --navy-2:     #0b1f45;
+      --blue:       #1549a8;
+      --accent:     #2470d6;
+      --teal:       #0dcfcf;
+      --teal-dim:   rgba(13,207,207,.12);
+      --teal-glow:  rgba(13,207,207,.25);
+      --surface:    #f6f9ff;
+      --surface-2:  #edf2fb;
+      --white:      #ffffff;
+      --text:       #0d1e3a;
+      --text-muted: #5a6b8a;
+      --border:     #dce6f5;
+      --border-2:   #c8d7f0;
+      --r-sm:  8px;
+      --r-md:  14px;
+      --r-lg:  20px;
+      --shadow-sm: 0 1px 4px rgba(10,30,80,.06);
+      --shadow-md: 0 4px 20px rgba(10,30,80,.10);
+      --shadow-lg: 0 12px 48px rgba(10,30,80,.14);
+      --shadow-teal: 0 8px 32px rgba(13,207,207,.22);
+      --gray:        #4a5878;
+      --light:       #e4ecf8;
+    }
+
+    /* ── Base ──────────────────────────────────────────────────── */
+    body {
+      font-family: 'Space Grotesk', 'PingFang TC', 'Microsoft JhengHei', 'Microsoft YaHei',
+                   'Segoe UI', Arial, sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "ss01" 1, "ss02" 1;
+    }
+
+    /* ── Lang display ──────────────────────────────────────────── */
+    [data-lang]        { display: none; }
+    [data-lang].active { display: block; }
+    .inline-lang        { display: none; }
+    .inline-lang.active { display: inline; }
+
+    /* ════════════════════════════════════════
+       NAV
+    ════════════════════════════════════════ */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(5,18,42,.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 68px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.25);
+    }
+    .cs-logo-wrap { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .cs-logo-svg  { width:46px; height:46px; flex-shrink:0; }
+    .cs-wordmark  { display:flex; flex-direction:column; line-height:1.15; }
+    .cs-wordmark .cs-name { font-size:1.25rem; font-weight:700; letter-spacing:-.3px; }
+    .cs-wordmark .cs-name .cs-check { color:#fff; }
+    .cs-wordmark .cs-name .cs-smart { color:var(--teal); }
+    .cs-wordmark .cs-sub  { font-size:.6rem; color:rgba(255,255,255,.45); letter-spacing:1.2px;
+                             text-transform:uppercase; margin-top:3px; font-family:'Space Mono', monospace; }
+
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+    .lang-btn {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,.35);
+      color: rgba(255,255,255,.88);
+      border-radius: var(--r-sm);
+      padding: 5px 13px;
+      font-size: .75rem; font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'Space Mono', monospace; letter-spacing: .5px;
+    }
+    .lang-btn:hover  { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); }
+    .lang-btn.active { background: var(--teal); border-color: var(--teal); color: var(--navy); }
+
+    /* ════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════ */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 76px 5vw 60px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    /* Layered orb background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 60% at 20% 50%, rgba(21,73,168,.45) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 40%, rgba(13,207,207,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 80% 80% at 50% 100%, rgba(36,112,214,.3) 0%, transparent 60%);
+    }
+    /* Subtle grid */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      font-weight: 700; line-height: 1.12;
+      max-width: 820px; margin: 0 auto 22px;
+      letter-spacing: -.8px;
+    }
+    .hero h1 em {
+      color: var(--teal); font-style: normal;
+      text-shadow: 0 0 40px rgba(13,207,207,.4);
+    }
+    .hero p.lead {
+      font-size: 1.15rem; font-weight: 400;
+      color: rgba(255,255,255,.82);
+      max-width: 600px; margin: 0 auto 44px;
+      line-height: 1.8;
+      letter-spacing: -.1px;
+    }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--teal);
+      color: var(--navy);
+      border-radius: var(--r-sm);
+      padding: 14px 34px;
+      font-size: .88rem; font-weight: 700;
+      text-decoration: none;
+      transition: all .25s;
+      border: none; cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+      box-shadow: var(--shadow-teal);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .cta-btn:hover {
+      background: #10e0e0;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(13,207,207,.38);
+    }
+
+    /* Stats row */
+    .hero-stats {
+      display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+      margin-top: 40px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: var(--r-md);
+      padding: 22px 36px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: background .25s, border-color .25s;
+    }
+    .stat-card:hover { background: rgba(255,255,255,.11); border-color: rgba(13,207,207,.4); }
+    .stat-card .num {
+      font-size: 2.4rem; font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      color: var(--teal);
+      letter-spacing: -1.5px;
+      text-shadow: 0 0 24px rgba(13,207,207,.35);
+    }
+    .stat-card .lbl { font-size: .72rem; font-weight: 500; color: rgba(255,255,255,.75); margin-top: 6px; letter-spacing: .8px; text-transform: uppercase; font-family: 'Space Grotesk', sans-serif; }
+
+    /* ════════════════════════════════════════
+       SECTION SCAFFOLD
+    ════════════════════════════════════════ */
+    section { padding: 60px 5vw; }
+    .section-inner { max-width: 1140px; margin: 0 auto; }
+
+    .section-eyebrow { display: none; } /* merged into .section-tag */
+    .section-tag {
+      display: inline-block;
+      background: rgba(36,112,214,.09);
+      border: 1px solid rgba(36,112,214,.22);
+      color: var(--blue);
+      border-radius: 6px;
+      padding: 4px 14px;
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: 1.8px; text-transform: uppercase;
+      margin-bottom: 16px;
+      font-family: 'Space Mono', monospace;
+    }
+    h2.section-title {
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+      font-weight: 700; color: var(--text);
+      margin-bottom: 14px; line-height: 1.15;
+      letter-spacing: -.6px;
+    }
+    h2.section-title em { color: var(--accent); font-style: normal; }
+    p.section-sub {
+      color: var(--text-muted); max-width: 540px;
+      margin-bottom: 32px; font-size: 1.05rem; line-height: 1.8;
+      letter-spacing: -.1px;
+    }
+
+    /* ════════════════════════════════════════
+       HERO STAT CARDS — equal width
+    ════════════════════════════════════════ */
+    .hero-stats { align-items: stretch; }
+    .stat-card {
+      flex: 1; min-width: 130px; max-width: 200px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    /* ════════════════════════════════════════
+       WHY — FEATURE CARDS (equal height, 3-col)
+    ════════════════════════════════════════ */
+    #why { background: var(--light); }
+    #why .section-tag { background: rgba(36,112,214,.09); border-color: rgba(36,112,214,.22); color: var(--blue); }
+    #why h2.section-title { color: var(--text); }
+    #why p.section-sub    { color: var(--text-muted); }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column;
+      transition: box-shadow .3s, transform .3s, background .3s, border-color .3s;
+      position: relative; overflow: hidden;
+    }
+    /* Left accent bar */
+    .feature-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg, var(--teal), var(--accent));
+      border-radius: 16px 0 0 16px;
+      opacity: .5; transition: opacity .3s;
+    }
+    .feature-card:hover {
+      background: var(--white);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+      border-color: var(--border-2);
+    }
+    .feature-card:hover::before { opacity: 1; }
+
+    /* Icon box — teal-tinted on light */
+    .feat-icon {
+      width: 46px; height: 46px; flex-shrink: 0;
+      background: rgba(13,207,207,.12);
+      border: 1.5px solid rgba(13,207,207,.3);
+      border-radius: 12px;
+      color: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .25s, box-shadow .25s, background .25s;
+    }
+    .feature-card:hover .feat-icon {
+      background: rgba(13,207,207,.2);
+      border-color: var(--teal);
+      box-shadow: 0 0 0 4px rgba(13,207,207,.1);
+    }
+    .feat-icon svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.8; }
+    /* Card header — icon/number inline with title */
+    .card-head {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 14px;
+    }
+    .card-head h3 { margin-bottom: 0; flex: 1; line-height: 1.3; }
+
+    .feature-card h3 { font-size: 1.08rem; font-weight: 700; color: var(--text); letter-spacing: -.2px; }
+    .feature-card p  { font-size: .95rem; color: var(--text-muted); line-height: 1.78; flex: 1; }
+
+    /* ════════════════════════════════════════
+       HOW IT WORKS — process flow (equal-height, connector line)
+    ════════════════════════════════════════ */
+    #how { background: var(--surface); }
+
+    /* Outer wrapper holds the connector line */
+    .steps-wrapper { position: relative; }
+    .steps-connector {
+      position: absolute;
+      top: 42px;                       /* vertically centred on the 36px circle */
+      left: calc(12.5% + 6px);        /* starts after first badge */
+      right: calc(12.5% + 6px);       /* ends before last badge */
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-2), var(--teal), var(--border-2));
+      opacity: .8;
+      pointer-events: none;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      position: relative;
+    }
+    .step {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px 20px;
+      box-shadow: 0 1px 5px rgba(10,30,80,.05);
+      display: flex; flex-direction: column;
+      transition: box-shadow .3s, transform .3s, border-color .3s;
+      position: relative;
+    }
+    .step:hover {
+      box-shadow: 0 10px 36px rgba(10,30,80,.13);
+      transform: translateY(-4px);
+      border-color: transparent;
+    }
+
+    /* Numbered badge — How it Works uses navy; Onboarding uses teal */
+    .step-num { width: 36px; height: 36px; flex-shrink: 0; background: var(--navy); border-radius: 50%; color: var(--white); font-weight: 700; font-size: .8rem; font-family: 'Space Mono', monospace; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; letter-spacing: .2px; }
+    .start-num {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--teal);
+      border-radius: 50%;
+      color: var(--white);
+      font-weight: 700; font-size: .8rem;
+      font-family: 'Space Mono', monospace;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+      letter-spacing: .2px;
+    }
+    .step h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); letter-spacing: -.2px; }
+    .step p  { font-size: .93rem; color: var(--text-muted); line-height: 1.78; flex: 1; }
+    .step p strong { color: var(--accent); font-weight: 600; }
+
+    /* ════════════════════════════════════════
+       COVERAGE TABLE
+    ════════════════════════════════════════ */
+    #coverage {
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
+      position: relative; overflow: hidden;
+    }
+    #coverage::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 70% at 85% 30%, rgba(13,207,207,.08) 0%, transparent 60%);
+    }
+    #coverage .section-tag { background: rgba(13,207,207,.1); border-color: rgba(13,207,207,.25); color: var(--teal); }
+    #coverage h2.section-title { color: var(--white); }
+    #coverage p.section-sub   { color: rgba(255,255,255,.55); }
+    .cov-table {
+      width: 100%; border-collapse: collapse;
+      border-radius: var(--r-md); overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,.3);
+    }
+    .cov-table thead tr { background: linear-gradient(90deg, var(--accent), #1a5fd0); }
+    .cov-table thead th {
+      padding: 16px 24px; text-align: left;
+      color: #fff; font-size: .72rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      font-family: 'Space Mono', monospace;
+    }
+    .cov-table tbody tr { border-bottom: 1px solid rgba(255,255,255,.06); transition: background .2s; }
+    .cov-table tbody tr:hover { background: rgba(13,207,207,.07); }
+    .cov-table tbody tr:nth-child(even) { background: rgba(255,255,255,.03); }
+    .cov-table tbody td { padding: 16px 24px; color: rgba(255,255,255,.92); font-size: .97rem; vertical-align: top; }
+    .cov-table tbody td:first-child {
+      font-weight: 700; color: var(--white);
+      border-left: 3px solid var(--teal);
+      white-space: nowrap; width: 1%;
+    }
+
+    /* ════════════════════════════════════════
+       GET STARTED — 4-col equal height
+    ════════════════════════════════════════ */
+    #start { background: var(--surface-2); }
+    .start-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .start-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 24px 20px 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 5px rgba(10,30,80,.05);
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      transition: box-shadow .3s, transform .3s, border-color .3s;
+    }
+    .start-card:hover {
+      box-shadow: 0 10px 36px rgba(10,30,80,.13);
+      transform: translateY(-4px);
+      border-color: transparent;
+    }
+    /* Left accent bar on hover */
+    .start-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg, var(--accent), var(--teal));
+      border-radius: 16px 0 0 16px;
+      opacity: 0; transition: opacity .3s;
+    }
+    .start-card:hover::before { opacity: 1; }
+    .start-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); letter-spacing: -.2px; }
+    .start-card p  { font-size: .93rem; color: var(--text-muted); line-height: 1.78; flex: 1; }
+    .start-card p strong { color: var(--accent); font-weight: 600; }
+
+    /* ════════════════════════════════════════
+       PRICING — equal height cards
+    ════════════════════════════════════════ */
+    #pricing { background: var(--white); }
+
+
+
+    /* ════════════════════════════════════════
+       CTA BAND
+    ════════════════════════════════════════ */
+    .cta-band {
+      background: linear-gradient(135deg, #0d2460 0%, var(--blue) 50%, #1a6bd0 100%);
+      padding: 52px 5vw; text-align: center;
+      color: var(--white); position: relative; overflow: hidden;
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(circle 400px at 10% 50%, rgba(13,207,207,.15) 0%, transparent 60%),
+        radial-gradient(circle 300px at 90% 50%, rgba(13,207,207,.10) 0%, transparent 60%);
+    }
+    .cta-band > * { position: relative; z-index: 1; }
+    .cta-band h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 700; margin-bottom: 14px; letter-spacing: -.5px; }
+    .cta-band p  { color: rgba(255,255,255,.82); margin-bottom: 28px; font-size: 1rem; letter-spacing: -.1px; }
+    .cta-btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 2px solid rgba(255,255,255,.5); color: var(--white);
+      border-radius: var(--r-sm); padding: 13px 30px;
+      font-size: .82rem; font-weight: 700; text-decoration: none;
+      transition: all .25s; letter-spacing: .5px; text-transform: uppercase;
+      cursor: pointer; font-family: 'Space Grotesk', sans-serif; background: transparent;
+    }
+    .cta-btn-outline:hover { background: rgba(255,255,255,.12); border-color: var(--white); }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.4);
+      text-align: center; padding: 36px 5vw;
+      font-size: .78rem; border-top: 1px solid rgba(255,255,255,.06);
+      letter-spacing: .3px; font-family: 'Space Mono', monospace;
+    }
+    footer strong { color: rgba(255,255,255,.85); }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps         { grid-template-columns: repeat(2, 1fr); }
+      .steps-connector { display: none; }
+      .start-grid    { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 4vw; }
+      .hero { padding: 56px 4vw 48px; }
+      .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+      }
+      .stat-card {
+        padding: 18px 14px;
+        min-width: unset;
+        max-width: unset;
+        flex: unset;
+      }
+      .stat-card .num { font-size: 1.9rem; letter-spacing: -1px; }
+      .stat-card .lbl { font-size: .65rem; }
+      section { padding: 44px 4vw; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .steps         { grid-template-columns: 1fr; }
+      .start-grid    { grid-template-columns: 1fr; }
+    }
+
+    /* About Us & Contact — responsive stacking */
+    @media (max-width: 768px) {
+      #about [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; gap: 36px !important; }
+      #contact [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────────────────────────── -->
+<nav>
+  <a class="cs-logo-wrap" href="#">
+    <!-- CheckSmart Shield Logo -->
+    <svg class="cs-logo-svg" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sg" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stop-color="#1e44a0"/>
+          <stop offset="100%" stop-color="#0a1632"/>
+        </linearGradient>
+        <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#20e4e4"/>
+          <stop offset="100%" stop-color="#0db8b8"/>
+        </linearGradient>
+        <clipPath id="sc"><path d="M50 3 L90 18 C93 19 94 22 94 25 L94 57 Q94 83 50 106 Q6 83 6 57 L6 25 C6 22 7 19 10 18 Z"/></clipPath>
+      </defs>
+      <!-- Shield -->
+      <path d="M50 3 L90 18 C93 19 94 22 94 25 L94 57 Q94 83 50 106 Q6 83 6 57 L6 25 C6 22 7 19 10 18 Z" fill="url(#sg)"/>
+      <!-- Outer glow ring -->
+      <path d="M50 3 L90 18 C93 19 94 22 94 25 L94 57 Q94 83 50 106 Q6 83 6 57 L6 25 C6 22 7 19 10 18 Z" fill="none" stroke="#3a6ad8" stroke-width="2" opacity="0.6"/>
+      <!-- Circuit board traces (clipped to shield) -->
+      <g clip-path="url(#sc)" stroke="#4a7ae8" stroke-width="0.9" fill="none" opacity="0.55">
+        <!-- Top horizontal bus -->
+        <line x1="6" y1="30" x2="94" y2="30"/>
+        <!-- Left vertical traces -->
+        <line x1="18" y1="30" x2="18" y2="48"/>  <circle cx="18" cy="48" r="1.8" fill="#4a7ae8"/>
+        <line x1="18" y1="48" x2="30" y2="48"/>
+        <line x1="30" y1="30" x2="30" y2="42"/>  <circle cx="30" cy="30" r="1.8" fill="#4a7ae8"/>
+        <line x1="30" y1="70" x2="30" y2="80"/>  <circle cx="30" cy="70" r="1.8" fill="#4a7ae8"/>
+        <line x1="30" y1="80" x2="18" y2="80"/>
+        <!-- Right vertical traces -->
+        <line x1="82" y1="30" x2="82" y2="48"/>  <circle cx="82" cy="48" r="1.8" fill="#4a7ae8"/>
+        <line x1="82" y1="48" x2="70" y2="48"/>
+        <line x1="70" y1="30" x2="70" y2="42"/>  <circle cx="70" cy="30" r="1.8" fill="#4a7ae8"/>
+        <line x1="70" y1="70" x2="70" y2="80"/>  <circle cx="70" cy="70" r="1.8" fill="#4a7ae8"/>
+        <line x1="70" y1="80" x2="82" y2="80"/>
+        <!-- Mid horizontal bus -->
+        <line x1="6" y1="90" x2="94" y2="90"/>
+        <!-- Junction dots on top bus -->
+        <circle cx="18" cy="30" r="2.2" fill="#4a7ae8"/>
+        <circle cx="82" cy="30" r="2.2" fill="#4a7ae8"/>
+        <circle cx="50" cy="30" r="2.2" fill="#4a7ae8"/>
+        <line x1="50" y1="30" x2="50" y2="20"/>
+        <!-- Corner small squares -->
+        <rect x="14" y="76" width="5" height="5" rx="1" fill="#4a7ae8" opacity="0.7"/>
+        <rect x="81" y="76" width="5" height="5" rx="1" fill="#4a7ae8" opacity="0.7"/>
+      </g>
+      <!-- Checkmark glow (outer) -->
+      <polyline points="30,57 44,72 72,41" fill="none" stroke="#17d4d4" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" opacity="0.18"/>
+      <!-- Checkmark body -->
+      <polyline points="30,57 44,72 72,41" fill="none" stroke="url(#cg)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Checkmark inner highlight -->
+      <polyline points="30,57 44,72 72,41" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.22"/>
+    </svg>
+    <div class="cs-wordmark">
+      <span class="cs-name"><span class="cs-check">Check</span><span class="cs-smart">Smart</span></span>
+      <span class="cs-sub">AML &bull; PEP &bull; KYC Compliance</span>
+    </div>
+  </a>
+  <div class="nav-right">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('zh-Hant')">繁中</button>
+    <button class="lang-btn" onclick="setLang('zh-Hans')">简中</button>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <!-- Hero Logo -->
+  <div style="margin-bottom:28px;">
+    <svg viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg" style="width:110px;height:110px;filter:drop-shadow(0 10px 32px rgba(20,210,210,0.38));">
+      <defs>
+        <linearGradient id="hsg" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stop-color="#1e44a0"/>
+          <stop offset="100%" stop-color="#0a1632"/>
+        </linearGradient>
+        <linearGradient id="hcg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#20e4e4"/>
+          <stop offset="100%" stop-color="#0db8b8"/>
+        </linearGradient>
+        <clipPath id="hsc"><path d="M50 3 L90 18 C93 19 94 22 94 25 L94 57 Q94 83 50 106 Q6 83 6 57 L6 25 C6 22 7 19 10 18 Z"/></clipPath>
+      </defs>
+      <path d="M50 3 L90 18 C93 19 94 22 94 25 L94 57 Q94 83 50 106 Q6 83 6 57 L6 25 C6 22 7 19 10 18 Z" fill="url(#hsg)"/>
+      <path d="M50 3 L90 18 C93 19 94 22 94 25 L94 57 Q94 83 50 106 Q6 83 6 57 L6 25 C6 22 7 19 10 18 Z" fill="none" stroke="#3a6ad8" stroke-width="2" opacity="0.7"/>
+      <g clip-path="url(#hsc)" stroke="#4a7ae8" stroke-width="0.9" fill="none" opacity="0.55">
+        <line x1="6" y1="30" x2="94" y2="30"/>
+        <line x1="18" y1="30" x2="18" y2="48"/>  <circle cx="18" cy="48" r="1.8" fill="#4a7ae8"/>
+        <line x1="18" y1="48" x2="30" y2="48"/>
+        <line x1="30" y1="30" x2="30" y2="42"/>  <circle cx="30" cy="30" r="1.8" fill="#4a7ae8"/>
+        <line x1="30" y1="70" x2="30" y2="80"/>  <circle cx="30" cy="70" r="1.8" fill="#4a7ae8"/>
+        <line x1="30" y1="80" x2="18" y2="80"/>
+        <line x1="82" y1="30" x2="82" y2="48"/>  <circle cx="82" cy="48" r="1.8" fill="#4a7ae8"/>
+        <line x1="82" y1="48" x2="70" y2="48"/>
+        <line x1="70" y1="30" x2="70" y2="42"/>  <circle cx="70" cy="30" r="1.8" fill="#4a7ae8"/>
+        <line x1="70" y1="70" x2="70" y2="80"/>  <circle cx="70" cy="70" r="1.8" fill="#4a7ae8"/>
+        <line x1="70" y1="80" x2="82" y2="80"/>
+        <line x1="6" y1="90" x2="94" y2="90"/>
+        <circle cx="18" cy="30" r="2.2" fill="#4a7ae8"/>
+        <circle cx="82" cy="30" r="2.2" fill="#4a7ae8"/>
+        <circle cx="50" cy="30" r="2.2" fill="#4a7ae8"/>
+        <line x1="50" y1="30" x2="50" y2="20"/>
+        <rect x="14" y="76" width="5" height="5" rx="1" fill="#4a7ae8" opacity="0.7"/>
+        <rect x="81" y="76" width="5" height="5" rx="1" fill="#4a7ae8" opacity="0.7"/>
+      </g>
+      <polyline points="30,57 44,72 72,41" fill="none" stroke="#17d4d4" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.18"/>
+      <polyline points="30,57 44,72 72,41" fill="none" stroke="url(#hcg)" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="30,57 44,72 72,41" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.22"/>
+    </svg>
+  </div>
+
+  <h1>
+    <span data-lang="en" class="active">Smarter, Better Value<br><em>Professional AML &amp; Sanctions Screening Online Service</em></span>
+    <span data-lang="zh-Hant">更智慧, 物有所值<br><em>專業反洗錢及制裁篩查在線服務</em></span>
+    <span data-lang="zh-Hans">更智慧, 物有所值<br><em>专业反洗钱及制裁筛查在线服务</em></span>
+  </h1>
+
+  <p class="lead">
+    <span data-lang="en" class="active">Specifically engineered for Money Service Operators, Dealers in Precious Metals and Stones, Trust and Company Service Providers, and Financial Institutions.</span>
+    <span data-lang="zh-Hant">專為貨幣服務經營者、貴金屬及寶石商、信託及公司服務提供商，以及金融機構精心打造。</span>
+    <span data-lang="zh-Hans">专为货币服务经营者、贵金属及宝石商、信托及公司服务提供商，以及金融机构精心打造。</span>
+  </p>
+
+  <button class="cta-btn" onclick="document.getElementById('start').scrollIntoView({behavior:'smooth'})">
+    <span data-lang="en" class="active inline-lang active">Get Started</span>
+    <span data-lang="zh-Hant" class="inline-lang">立即開始</span>
+    <span data-lang="zh-Hans" class="inline-lang">立即开始</span>
+  </button>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="num">2.1M+</div>
+      <div class="lbl">
+        <span data-lang="en" class="active">Global Entities</span>
+        <span data-lang="zh-Hant">全球實體</span>
+        <span data-lang="zh-Hans">全球实体</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="num">329</div>
+      <div class="lbl">
+        <span data-lang="en" class="active">Data Sources</span>
+        <span data-lang="zh-Hant">數據來源</span>
+        <span data-lang="zh-Hans">数据来源</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="num">880K+</div>
+      <div class="lbl">
+        <span data-lang="en" class="active">PEPs Covered</span>
+        <span data-lang="zh-Hant">政治公眾人物</span>
+        <span data-lang="zh-Hans">政治公众人物</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="num">24hr</div>
+      <div class="lbl">
+        <span data-lang="en" class="active">Data Refresh</span>
+        <span data-lang="zh-Hant">數據更新周期</span>
+        <span data-lang="zh-Hans">数据更新周期</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHY CHECKSMART ─────────────────────────────────────────────────── -->
+<section id="why">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span data-lang="en" class="active">Why CheckSmart</span>
+      <span data-lang="zh-Hant">為何選擇 CheckSmart</span>
+      <span data-lang="zh-Hans">为何选择 CheckSmart</span>
+    </div>
+    <h2 class="section-title">
+      <span data-lang="en" class="active">Why Choose <em>CheckSmart?</em></span>
+      <span data-lang="zh-Hant">為何選擇 <em>CheckSmart？</em></span>
+      <span data-lang="zh-Hans">为何选择 <em>CheckSmart？</em></span>
+    </h2>
+    <p class="section-sub">
+      <span data-lang="en" class="active">Six reasons to choose our high-precision screening platform.</span>
+      <span data-lang="zh-Hant">六大理由，選擇我們的高精度篩查平台。</span>
+      <span data-lang="zh-Hans">六大理由，选择我们的高精度筛查平台。</span>
+    </p>
+
+    <div class="feature-grid">
+
+      <!-- 1 Expanding Global Coverage -->
+      <div class="feature-card">
+        <div class="card-head"><div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div><h3>
+          <span data-lang="en" class="active">Expanding Global Coverage</span>
+          <span data-lang="zh-Hant">持續擴展的全球覆蓋</span>
+          <span data-lang="zh-Hans">持续扩展的全球覆盖</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">As of March 2026, access 329 expanding global sources covering sanctions, PEPs, and entities of interest.</span>
+          <span data-lang="zh-Hant">截至 2026 年 3 月，接入 329 個持續擴展的全球來源，涵蓋制裁名單、PEP 及關注實體。</span>
+          <span data-lang="zh-Hans">截至 2026 年 3 月，接入 329 个持续扩展的全球来源，涵盖制裁名单、PEP 及关注实体。</span>
+        </p>
+      </div>
+
+      <!-- 2 Daily Data Updates -->
+      <div class="feature-card">
+        <div class="card-head"><div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+        </div><h3>
+          <span data-lang="en" class="active">Daily Data Updates</span>
+          <span data-lang="zh-Hant">每日數據更新</span>
+          <span data-lang="zh-Hans">每日数据更新</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Information is refreshed every 24 hours across all global sources to reflect the latest regulatory changes and risk listings.</span>
+          <span data-lang="zh-Hant">所有全球來源的資料每 24 小時更新一次，及時反映最新監管變化及風險名單。</span>
+          <span data-lang="zh-Hans">所有全球来源的数据每 24 小时更新一次，及时反映最新监管变化及风险名单。</span>
+        </p>
+      </div>
+
+      <!-- 3 Multi-Language Data Support -->
+      <div class="feature-card">
+        <div class="card-head"><div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/><path d="M7 8h10M7 12h6"/>
+          </svg>
+        </div><h3>
+          <span data-lang="en" class="active">Multi-Language Data Support</span>
+          <span data-lang="zh-Hant">多語言數據支援</span>
+          <span data-lang="zh-Hans">多语言数据支持</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Search and identify entities across all major world languages for seamless international due diligence.</span>
+          <span data-lang="zh-Hant">支持以所有主要世界語言搜尋及識別實體，助力無縫的國際盡職調查。</span>
+          <span data-lang="zh-Hans">支持以所有主要世界语言搜索及识别实体，助力无缝的国际尽职调查。</span>
+        </p>
+      </div>
+
+      <!-- 4 Web-Based Interface -->
+      <div class="feature-card">
+        <div class="card-head"><div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><polyline points="8 21 12 17 16 21"/>
+            <line x1="3" y1="7" x2="21" y2="7"/>
+          </svg>
+        </div><h3>
+          <span data-lang="en" class="active">Web-Based Interface</span>
+          <span data-lang="zh-Hant">純網頁介面</span>
+          <span data-lang="zh-Hans">纯网页界面</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Rapid screening via an intuitive web portal — zero technical setup required. Log in and start searching immediately.</span>
+          <span data-lang="zh-Hant">透過直觀的網頁門戶快速篩查，無需任何技術配置，登入即可立即開始搜尋。</span>
+          <span data-lang="zh-Hans">通过直观的网页门户快速筛查，无需任何技术配置，登录即可立即开始搜索。</span>
+        </p>
+      </div>
+
+      <!-- 5 Instant Audit Readiness -->
+      <div class="feature-card">
+        <div class="card-head"><div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div><h3>
+          <span data-lang="en" class="active">Instant Audit Readiness</span>
+          <span data-lang="zh-Hant">即時審計就緒</span>
+          <span data-lang="zh-Hans">即时审计就绪</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Export time-stamped audit trails to document and support your compliance decisions during regulatory reviews.</span>
+          <span data-lang="zh-Hant">匯出帶時間戳記的審計記錄，在監管審查期間為您的合規決策提供文件支持。</span>
+          <span data-lang="zh-Hans">导出带时间戳的审计记录，在监管审查期间为您的合规决策提供文件支持。</span>
+        </p>
+      </div>
+
+      <!-- 6 User-Driven Evolution -->
+      <div class="feature-card">
+        <div class="card-head"><div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+            <polyline points="17 6 23 6 23 12"/>
+          </svg>
+        </div><h3>
+          <span data-lang="en" class="active">User-Driven Evolution</span>
+          <span data-lang="zh-Hant">以用戶為導向的持續進化</span>
+          <span data-lang="zh-Hans">以用户为导向的持续进化</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">We are dedicated to evolving our platform to meet your specific compliance and regulatory needs.</span>
+          <span data-lang="zh-Hant">我們致力於持續優化平台，精準滿足您的合規及監管需求。</span>
+          <span data-lang="zh-Hans">我们致力于持续优化平台，精准满足您的合规及监管需求。</span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ────────────────────────────────────────────────────── -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span data-lang="en" class="active">Workflow</span>
+      <span data-lang="zh-Hant">工作流程</span>
+      <span data-lang="zh-Hans">工作流程</span>
+    </div>
+    <h2 class="section-title">
+      <span data-lang="en" class="active">How it <em>Works</em></span>
+      <span data-lang="zh-Hant">如何 <em>運作</em></span>
+      <span data-lang="zh-Hans">如何 <em>运作</em></span>
+    </h2>
+    <p class="section-sub">
+      <span data-lang="en" class="active">Intuitive 3-step screening portal with zero technical setup.</span>
+      <span data-lang="zh-Hant">直觀的三步篩查門戶，無需任何技術配置。</span>
+      <span data-lang="zh-Hans">直观的三步筛查门户，无需任何技术配置。</span>
+    </p>
+
+    <div class="steps-wrapper">
+      <div class="steps-connector"></div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="card-head"><div class="step-num">1</div><h3>
+          <span data-lang="en" class="active">Search &amp; Identify</span>
+          <span data-lang="zh-Hant">搜索與識別</span>
+          <span data-lang="zh-Hans">搜索与识别</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Enter the name of an individual or entity into our streamlined search interface. Supports all major world languages for accurate global identification.</span>
+          <span data-lang="zh-Hant">在我們簡潔的搜索界面中輸入個人或實體名稱，支持所有主要世界語言，確保跨司法管轄區的準確識別。</span>
+          <span data-lang="zh-Hans">在我们简洁的搜索界面中输入个人或实体名称，支持所有主要世界语言，确保跨司法管辖区的准确识别。</span>
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="card-head"><div class="step-num">2</div><h3>
+          <span data-lang="en" class="active">Analyze Results</span>
+          <span data-lang="zh-Hant">分析結果</span>
+          <span data-lang="zh-Hans">分析结果</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Instantly access a consolidated profile from 329 authoritative sources — global sanctions, 880,000+ PEPs, and law enforcement watchlists in a single high-fidelity view.</span>
+          <span data-lang="zh-Hant">即時獲取來自 329 個權威來源的整合檔案，涵蓋全球制裁、逾 88 萬名 PEP 及執法觀察名單，盡覽於一個高保真視圖中。</span>
+          <span data-lang="zh-Hans">即时获取来自 329 个权威来源的整合档案，涵盖全球制裁、逾 88 万名 PEP 及执法观察名单，尽览于一个高保真视图中。</span>
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="card-head"><div class="step-num">3</div><h3>
+          <span data-lang="en" class="active">Audit &amp; Document</span>
+          <span data-lang="zh-Hant">審計與存檔</span>
+          <span data-lang="zh-Hans">审计与存档</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Export a time-stamped audit trail documenting your due diligence process — ready evidence for compliance decisions and regulatory reviews.</span>
+          <span data-lang="zh-Hant">匯出帶時間戳記的審計記錄，完整記錄您的盡職調查流程，為合規決策及監管審查提供即用証明。</span>
+          <span data-lang="zh-Hans">导出带时间戳的审计记录，完整记录您的尽职调查流程，为合规决策及监管审查提供即用证明。</span>
+        </p>
+      </div>
+
+    </div>
+    </div><!-- /steps-wrapper -->
+  </div>
+</section>
+
+<!-- ── COVERAGE TABLE ─────────────────────────────────────────────────── -->
+<section id="coverage">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span data-lang="en" class="active">Data Coverage</span>
+      <span data-lang="zh-Hant">數據覆蓋</span>
+      <span data-lang="zh-Hans">数据覆盖</span>
+    </div>
+    <h2 class="section-title">
+      <span data-lang="en" class="active">What's <em>Included</em></span>
+      <span data-lang="zh-Hant">涵蓋範疇</span>
+      <span data-lang="zh-Hans">涵盖范畴</span>
+    </h2>
+    <p class="section-sub">
+      <span data-lang="en" class="active">High-fidelity data in one web interface.</span>
+      <span data-lang="zh-Hant">高保真數據集中於單一網頁介面。</span>
+      <span data-lang="zh-Hans">高保真数据集中于单一网页界面。</span>
+    </p>
+
+    <table class="cov-table">
+      <thead>
+        <tr>
+          <th>
+            <span data-lang="en" class="active">Category</span>
+            <span data-lang="zh-Hant">類別</span>
+            <span data-lang="zh-Hans">类别</span>
+          </th>
+          <th>
+            <span data-lang="en" class="active">Scope &amp; Authority <span style="font-weight:400;opacity:.7;">(as of March 2026)</span></span>
+            <span data-lang="zh-Hant">範圍與權威 <span style="font-weight:400;opacity:.7;">（截至 2026 年 3 月）</span></span>
+            <span data-lang="zh-Hans">范围与权威 <span style="font-weight:400;opacity:.7;">（截至 2026 年 3 月）</span></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span data-lang="en" class="active">Global Sanctions</span>
+            <span data-lang="zh-Hant">全球制裁</span>
+            <span data-lang="zh-Hans">全球制裁</span>
+          </td>
+          <td>
+            <span data-lang="en" class="active">UN Security Council, EU Restrictive Measures, US OFAC, UK OFSI, and China Anti-Foreign Sanctions.</span>
+            <span data-lang="zh-Hant">聯合國安理會、歐盟限制措施、美國 OFAC、英國 OFSI 及中國反外國制裁。</span>
+            <span data-lang="zh-Hans">联合国安理会、欧盟限制措施、美国 OFAC、英国 OFSI 及中国反外国制裁。</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span data-lang="en" class="active">PEPs &amp; Officials</span>
+            <span data-lang="zh-Hant">政治公眾人物及官員</span>
+            <span data-lang="zh-Hans">政治公众人物及官员</span>
+          </td>
+          <td>
+            <span data-lang="en" class="active">Over 880,000 PEPs, including National Cabinets, Legislatures, and Senior Military officials worldwide.</span>
+            <span data-lang="zh-Hant">逾 88 萬名 PEP，涵蓋全球各國內閣、立法機構及高級軍事官員。</span>
+            <span data-lang="zh-Hans">逾 88 万名 PEP，涵盖全球各国内阁、立法机构及高级军事官员。</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span data-lang="en" class="active">Law Enforcement</span>
+            <span data-lang="zh-Hant">執法機構</span>
+            <span data-lang="zh-Hans">执法机构</span>
+          </td>
+          <td>
+            <span data-lang="en" class="active">International warrants including Interpol Red Notices, Europol Most Wanted, and FBI Most Wanted.</span>
+            <span data-lang="zh-Hant">國際通緝令，包括國際刑警組織紅色通緝令、歐洲刑警組織通緝名單及美國聯邦調查局通緝名單。</span>
+            <span data-lang="zh-Hans">国际通缉令，包括国际刑警组织红色通缉令、欧洲刑警组织通缉名单及美国联邦调查局通缉名单。</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span data-lang="en" class="active">Regulatory &amp; Risk</span>
+            <span data-lang="zh-Hant">監管及風險</span>
+            <span data-lang="zh-Hans">监管及风险</span>
+          </td>
+          <td>
+            <span data-lang="en" class="active">World Bank Debarred Providers, SEC/CFTC Enforcement Actions, Sanctioned Securities, and global Regulatory Watchlists.</span>
+            <span data-lang="zh-Hant">世界銀行禁止供應商名單、SEC/CFTC 執法行動、受制裁證券及全球監管觀察名單。</span>
+            <span data-lang="zh-Hans">世界银行禁止供应商名单、SEC/CFTC 执法行动、受制裁证券及全球监管观察名单。</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span data-lang="en" class="active">Special Interest</span>
+            <span data-lang="zh-Hant">特別關注</span>
+            <span data-lang="zh-Hans">特别关注</span>
+          </td>
+          <td>
+            <span data-lang="en" class="active">Tracking of "War Enablers," maritime-related sanctions, and de-duplicated records from global investigative journalism databases.</span>
+            <span data-lang="zh-Hant">追蹤「戰爭助推者」、海事相關制裁，以及來自全球調查性新聞數據庫的去重記錄。</span>
+            <span data-lang="zh-Hans">追踪"战争助推者"、海事相关制裁，以及来自全球调查性新闻数据库的去重记录。</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── GET STARTED ────────────────────────────────────────────────────── -->
+<section id="start">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span data-lang="en" class="active">Onboarding</span>
+      <span data-lang="zh-Hant">入門指引</span>
+      <span data-lang="zh-Hans">入门指引</span>
+    </div>
+    <h2 class="section-title">
+      <span data-lang="en" class="active">Get <em>Started</em></span>
+      <span data-lang="zh-Hant">幾分鐘內即可 <em>開始使用</em></span>
+      <span data-lang="zh-Hans">几分钟内即可 <em>开始使用</em></span>
+    </h2>
+    <p class="section-sub">
+      <span data-lang="en" class="active">From enquiry to live screening — fast, simple, and fully guided.</span>
+      <span data-lang="zh-Hant">從查詢到正式篩查，全程快速、簡便、有指引。</span>
+      <span data-lang="zh-Hans">从咨询到正式筛查，全程快速、简便、有指引。</span>
+    </p>
+
+    <div class="start-grid">
+
+      <div class="start-card">
+        <div class="card-head"><div class="start-num">1</div><h3>
+          <span data-lang="en" class="active">Enquire</span>
+          <span data-lang="zh-Hant">提出查詢</span>
+          <span data-lang="zh-Hans">提出咨询</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Email <strong>info@checksmart.com</strong> to discuss your requirements and select the right plan for your organisation.</span>
+          <span data-lang="zh-Hant">請電郵至 <strong>info@checksmart.com</strong>，說明需求，選定最適合貴機構的方案。</span>
+          <span data-lang="zh-Hans">请发邮件至 <strong>info@checksmart.com</strong>，说明需求，选定最适合贵机构的方案。</span>
+        </p>
+      </div>
+
+      <div class="start-card">
+        <div class="card-head"><div class="start-num">2</div><h3>
+          <span data-lang="en" class="active">Register</span>
+          <span data-lang="zh-Hant">線上註冊</span>
+          <span data-lang="zh-Hans">在线注册</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Create your account online at <strong>check-smart.com/registration</strong> — no technical setup required.</span>
+          <span data-lang="zh-Hant">前往 <strong>check-smart.com/registration</strong> 線上建立帳戶，無需任何技術配置。</span>
+          <span data-lang="zh-Hans">前往 <strong>check-smart.com/registration</strong> 在线创建账户，无需任何技术配置。</span>
+        </p>
+      </div>
+
+      <div class="start-card">
+        <div class="card-head"><div class="start-num">3</div><h3>
+          <span data-lang="en" class="active">Screen</span>
+          <span data-lang="zh-Hant">開始篩查</span>
+          <span data-lang="zh-Hans">开始筛查</span>
+        </h3></div>
+        <p>
+          <span data-lang="en" class="active">Log in at <strong>check-smart.com/login</strong> and start searching with full database access and audit trails from day one.</span>
+          <span data-lang="zh-Hant">登入 <strong>check-smart.com/login</strong>，第一天起即享完整數據庫存取及審計記錄功能。</span>
+          <span data-lang="zh-Hans">登录 <strong>check-smart.com/login</strong>，第一天起即享完整数据库访问及审计记录功能。</span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ───────────────────────────────────────────────────────────── -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span data-lang="en" class="active">Pricing</span>
+      <span data-lang="zh-Hant">定價方案</span>
+      <span data-lang="zh-Hans">定价方案</span>
+    </div>
+    <h2 class="section-title">
+      <span data-lang="en" class="active">Simple, <em>Transparent Pricing</em></span>
+      <span data-lang="zh-Hant">簡單 <em>透明定價</em></span>
+      <span data-lang="zh-Hans">简单 <em>透明定价</em></span>
+    </h2>
+    <p class="section-sub">
+      <span data-lang="en" class="active">Simple, transparent, and scalable.</span>
+      <span data-lang="zh-Hant">簡單、透明、可擴展。</span>
+      <span data-lang="zh-Hans">简单、透明、可扩展。</span>
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px;align-items:stretch;">
+
+      <!-- Starter -->
+      <div style="background:#f5f8ff;border:1.5px solid var(--border);border-radius:12px;padding:32px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;font-family:'Space Mono',monospace;">
+          <span data-lang="en" class="active">Starter</span>
+          <span data-lang="zh-Hant">入門版</span>
+          <span data-lang="zh-Hans">入门版</span>
+        </div>
+        <div style="font-size:2.4rem;font-weight:700;color:var(--navy);line-height:1;font-family:'Space Mono',monospace;letter-spacing:-1px;">$21,600</div>
+        <div style="font-size:.78rem;color:var(--gray);margin-top:6px;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;">
+          <span data-lang="en" class="active">/ year</span>
+          <span data-lang="zh-Hant">/ 年</span>
+          <span data-lang="zh-Hans">/ 年</span>
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:20px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--navy);font-weight:600;">
+              <span data-lang="en" class="active">1,200 searches / year</span>
+              <span data-lang="zh-Hant">每年 1,200 次搜尋</span>
+              <span data-lang="zh-Hans">每年 1,200 次搜索</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--gray);">
+              <span data-lang="en" class="active">Full database access</span>
+              <span data-lang="zh-Hant">完整數據庫存取</span>
+              <span data-lang="zh-Hans">完整数据库访问</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--gray);">
+              <span data-lang="en" class="active">Dedicated support</span>
+              <span data-lang="zh-Hant">專屬客戶支援</span>
+              <span data-lang="zh-Hans">专属客户支持</span>
+            </span>
+          </div>
+        </div>
+        <button class="cta-btn" style="margin-top:28px;width:100%;text-align:center;background:var(--blue);color:#fff;">
+          <span data-lang="en" class="active inline-lang active">Contact Us</span>
+          <span data-lang="zh-Hant" class="inline-lang">聯絡我們</span>
+          <span data-lang="zh-Hans" class="inline-lang">联系我们</span>
+        </button>
+      </div>
+
+      <!-- Business -->
+      <div style="background:#f5f8ff;border:1.5px solid var(--border);border-radius:12px;padding:32px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;font-family:'Space Mono',monospace;">
+          <span data-lang="en" class="active">Business</span>
+          <span data-lang="zh-Hant">商業版</span>
+          <span data-lang="zh-Hans">商业版</span>
+        </div>
+        <div style="font-size:2.4rem;font-weight:700;color:var(--navy);line-height:1;font-family:'Space Mono',monospace;letter-spacing:-1px;">$43,200</div>
+        <div style="font-size:.78rem;color:var(--gray);margin-top:6px;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;">
+          <span data-lang="en" class="active">/ year</span>
+          <span data-lang="zh-Hant">/ 年</span>
+          <span data-lang="zh-Hans">/ 年</span>
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:20px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--navy);font-weight:600;">
+              <span data-lang="en" class="active">6,000 searches / year</span>
+              <span data-lang="zh-Hant">每年 6,000 次搜尋</span>
+              <span data-lang="zh-Hans">每年 6,000 次搜索</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--gray);">
+              <span data-lang="en" class="active">Full database access</span>
+              <span data-lang="zh-Hant">完整數據庫存取</span>
+              <span data-lang="zh-Hans">完整数据库访问</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--gray);">
+              <span data-lang="en" class="active">Dedicated support</span>
+              <span data-lang="zh-Hant">專屬客戶支援</span>
+              <span data-lang="zh-Hans">专属客户支持</span>
+            </span>
+          </div>
+        </div>
+        <button class="cta-btn" style="margin-top:28px;width:100%;text-align:center;background:var(--blue);color:#fff;">
+          <span data-lang="en" class="active inline-lang active">Contact Us</span>
+          <span data-lang="zh-Hant" class="inline-lang">聯絡我們</span>
+          <span data-lang="zh-Hans" class="inline-lang">联系我们</span>
+        </button>
+      </div>
+
+      <!-- Enterprise (highlighted) -->
+      <div style="background:var(--navy);border:2px solid var(--teal);border-radius:12px;padding:32px 24px;display:flex;flex-direction:column;position:relative;">
+        <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--teal);color:var(--navy);font-size:.62rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:4px 14px;border-radius:20px;white-space:nowrap;font-family:'Space Mono',monospace;">
+          <span data-lang="en" class="active">Most Popular</span>
+          <span data-lang="zh-Hant">最受歡迎</span>
+          <span data-lang="zh-Hans">最受欢迎</span>
+        </div>
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;font-family:'Space Mono',monospace;">
+          <span data-lang="en" class="active">Enterprise</span>
+          <span data-lang="zh-Hant">企業版</span>
+          <span data-lang="zh-Hans">企业版</span>
+        </div>
+        <div style="font-size:2.4rem;font-weight:700;color:#fff;line-height:1;font-family:'Space Mono',monospace;letter-spacing:-1px;">$55,200</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.6);margin-top:6px;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;">
+          <span data-lang="en" class="active">/ year</span>
+          <span data-lang="zh-Hant">/ 年</span>
+          <span data-lang="zh-Hans">/ 年</span>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.15);padding-top:20px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:rgba(23,195,195,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="#17c3c3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:#fff;font-weight:600;">
+              <span data-lang="en" class="active">18,000 searches / year</span>
+              <span data-lang="zh-Hant">每年 18,000 次搜尋</span>
+              <span data-lang="zh-Hans">每年 18,000 次搜索</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:rgba(23,195,195,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="#17c3c3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:rgba(255,255,255,.8);">
+              <span data-lang="en" class="active">Full database access</span>
+              <span data-lang="zh-Hant">完整數據庫存取</span>
+              <span data-lang="zh-Hans">完整数据库访问</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:22px;height:22px;background:rgba(23,195,195,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="#17c3c3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:rgba(255,255,255,.8);">
+              <span data-lang="en" class="active">Dedicated support</span>
+              <span data-lang="zh-Hant">專屬客戶支援</span>
+              <span data-lang="zh-Hans">专属客户支持</span>
+            </span>
+          </div>
+        </div>
+        <button class="cta-btn" style="margin-top:28px;width:100%;text-align:center;background:var(--teal);color:var(--navy);">
+          <span data-lang="en" class="active inline-lang active">Contact Us</span>
+          <span data-lang="zh-Hant" class="inline-lang">聯絡我們</span>
+          <span data-lang="zh-Hans" class="inline-lang">联系我们</span>
+        </button>
+      </div>
+
+      <!-- Enterprise Plus -->
+      <div style="background:#f5f8ff;border:1.5px solid var(--border);border-radius:12px;padding:32px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">
+          <span data-lang="en" class="active">Enterprise Plus</span>
+          <span data-lang="zh-Hant">企業增強版</span>
+          <span data-lang="zh-Hans">企业增强版</span>
+        </div>
+        <div style="font-size:2.2rem;font-weight:900;color:var(--navy);line-height:1;">$64,800</div>
+        <div style="font-size:.82rem;color:var(--gray);margin-top:4px;margin-bottom:20px;">
+          <span data-lang="en" class="active">/ year</span>
+          <span data-lang="zh-Hant">/ 年</span>
+          <span data-lang="zh-Hans">/ 年</span>
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:20px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--navy);font-weight:600;">
+              <span data-lang="en" class="active">24,000 searches / year</span>
+              <span data-lang="zh-Hant">每年 24,000 次搜尋</span>
+              <span data-lang="zh-Hans">每年 24,000 次搜索</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--gray);">
+              <span data-lang="en" class="active">Full database access</span>
+              <span data-lang="zh-Hant">完整數據庫存取</span>
+              <span data-lang="zh-Hans">完整数据库访问</span>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:.9rem;color:var(--gray);">
+              <span data-lang="en" class="active">Dedicated support</span>
+              <span data-lang="zh-Hant">專屬客戶支援</span>
+              <span data-lang="zh-Hans">专属客户支持</span>
+            </span>
+          </div>
+        </div>
+        <button class="cta-btn" style="margin-top:28px;width:100%;text-align:center;background:var(--blue);color:#fff;">
+          <span data-lang="en" class="active inline-lang active">Contact Us</span>
+          <span data-lang="zh-Hant" class="inline-lang">聯絡我們</span>
+          <span data-lang="zh-Hans" class="inline-lang">联系我们</span>
+        </button>
+      </div>
+
+    </div>
+    <p style="text-align:center;margin-top:28px;font-size:.83rem;color:var(--text-muted);line-height:1.6;">
+      <span data-lang="en" class="active">All pricing is billed annually and excludes applicable taxes. Search volumes reset at the beginning of each billing cycle.</span>
+      <span data-lang="zh-Hant">所有定價均按年計費，不含適用稅款。搜尋次數於每個計費周期開始時重置。</span>
+      <span data-lang="zh-Hans">所有定价均按年计费，不含适用税款。搜索次数于每个计费周期开始时重置。</span>
+    </p>
+  </div>
+</section>
+
+<!-- ── CONTACT ─────────────────────────────────────────────────────── -->
+<div id="contact" style="background:var(--navy-2);padding:72px 5vw;position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.06);">
+
+  <!-- background accent -->
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(36,112,214,.12) 0%,transparent 60%),radial-gradient(circle 300px at 5% 50%,rgba(13,207,207,.06) 0%,transparent 60%);"></div>
+
+  <div style="position:relative;z-index:1;max-width:800px;margin:0 auto;text-align:center;">
+
+    <div class="section-tag" style="background:rgba(36,112,214,.12);border-color:rgba(36,112,214,.28);color:#7aabf7;">
+      <span data-lang="en" class="active">Contact</span>
+      <span data-lang="zh-Hant">聯絡我們</span>
+      <span data-lang="zh-Hans">联系我们</span>
+    </div>
+
+    <h2 style="font-size:clamp(1.7rem,3vw,2.3rem);font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:14px;margin-top:16px;line-height:1.2;">
+      <span data-lang="en" class="active">Get in Touch</span>
+      <span data-lang="zh-Hant">與我們聯絡</span>
+      <span data-lang="zh-Hans">与我们联系</span>
+    </h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:40px;max-width:520px;margin-left:auto;margin-right:auto;">
+      <span data-lang="en" class="active">Discuss your requirements, select a plan, or request a demo — we're ready to help.</span>
+      <span data-lang="zh-Hant">歡迎聯絡我們，討論您的需求、選擇方案或申請演示。</span>
+      <span data-lang="zh-Hans">欢迎联系我们，讨论您的需求、选择方案或申请演示。</span>
+    </p>
+
+    <!-- Contact cards — horizontal row -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <a href="mailto:info@checksmart.com" style="display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;padding:28px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;transition:background .2s,border-color .2s;">
+        <span style="width:44px;height:44px;background:rgba(13,207,207,.1);border:1px solid rgba(13,207,207,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </span>
+        <div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px;font-family:'Space Mono',monospace;">
+            <span data-lang="en" class="active">Email</span>
+            <span data-lang="zh-Hant">電郵</span>
+            <span data-lang="zh-Hans">电邮</span>
+          </div>
+          <div style="font-size:.9rem;font-weight:600;color:rgba(255,255,255,.88);">info@checksmart.com</div>
+        </div>
+      </a>
+      <a href="https://check-smart.com" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;padding:28px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;transition:background .2s,border-color .2s;">
+        <span style="width:44px;height:44px;background:rgba(13,207,207,.1);border:1px solid rgba(13,207,207,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </span>
+        <div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px;font-family:'Space Mono',monospace;">
+            <span data-lang="en" class="active">Website</span>
+            <span data-lang="zh-Hant">網站</span>
+            <span data-lang="zh-Hans">网站</span>
+          </div>
+          <div style="font-size:.9rem;font-weight:600;color:rgba(255,255,255,.88);">check-smart.com</div>
+        </div>
+      </a>
+      <a href="https://check-smart.com/login" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;padding:28px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;transition:background .2s,border-color .2s;">
+        <span style="width:44px;height:44px;background:rgba(13,207,207,.1);border:1px solid rgba(13,207,207,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </span>
+        <div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px;font-family:'Space Mono',monospace;">
+            <span data-lang="en" class="active">Login</span>
+            <span data-lang="zh-Hant">登入</span>
+            <span data-lang="zh-Hans">登录</span>
+          </div>
+          <div style="font-size:.9rem;font-weight:600;color:rgba(255,255,255,.88);">check-smart.com/login</div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
+<footer>
+  <p>&copy; 2026 <strong>CheckSmart</strong>. All rights reserved.</p>
+</footer>
+
+<!-- ── LANG SWITCHER SCRIPT ───────────────────────────────────────────── -->
+<script>
+  function setLang(lang) {
+    // Update html lang attribute
+    document.documentElement.lang = lang;
+
+    // Show/hide block elements
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      el.classList.toggle('active', el.dataset.lang === lang);
+    });
+
+    // Show/hide inline elements (buttons inside CTA)
+    document.querySelectorAll('.inline-lang').forEach(el => {
+      el.classList.toggle('active', el.dataset.lang === lang);
+    });
+
+    // Update nav button styles
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      const map = { 'EN': 'en', '繁中': 'zh-Hant', '简中': 'zh-Hans' };
+      btn.classList.toggle('active', map[btn.textContent.trim()] === lang);
+    });
+  }
+
+  // Init
+  setLang('en');
+</script>
+
+</body>
+</html>
